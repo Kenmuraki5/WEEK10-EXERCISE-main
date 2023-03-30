@@ -21,7 +21,7 @@ router.get('/:blogId/comments', function(req, res, next){
 });
 
 
-// Get comment
+// Create new comment
 router.post('/:blogId/comments', upload.single('myImage'), async function(req, res, next){
     const conn = await pool.getConnection()
     // Begin transaction

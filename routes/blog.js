@@ -98,43 +98,66 @@ router.post('/blogs', upload.single('myImage'), async function (req, res, next) 
     }
 });
 
+// show detail
 router.get("/blogs/:id", async function (req, res, next) {
-  const conn = await pool.getConnection()
-  await conn.beginTransaction();
 
-  try {
-    const promise1 = await conn.query("SELECT * FROM blogs WHERE id=?", [
-      req.params.id,
-    ]);
-    const promise2 = await conn.query("SELECT * FROM comments left outer join images on comments.id = images.comment_id WHERE comments.blog_id=? order by comment_date", [
-      req.params.id,
-    ]);
-    const promise3 = await conn.query("SELECT * FROM images WHERE blog_id=? and comment_id is null", [
-      req.params.id,
-    ]);
-    Promise.all([promise1, promise2, promise3])
-    .then((results) => {
-      const blogs = results[0];
-      const comments = results[1];
-      const img = results[2]
-      res.render("blogs/detail", {
-        blog: blogs[0][0],
-        comments: comments[0],
-        images: img[0],
-        error: null,
-      });
-    })
-    .catch((err) => {
-      throw err;
+  // try {
+  //   const promise1 = pool.query("SELECT * FROM blogs WHERE id=?", [
+  //     req.params.id,
+  //   ]);
+  //   const promise2 = pool.query("SELECT * FROM comments left outer join images on comments.id = images.comment_id WHERE comments.blog_id=? order by comment_date", [
+  //     req.params.id,
+  //   ]);
+  //   const promise3 = pool.query("SELECT * FROM images WHERE blog_id=? and comment_id is null", [
+  //     req.params.id,
+  //   ]);
+  //   Promise.all([promise1, promise2, promise3])
+  //   .then((results) => {
+  //     const blogs = results[0];
+  //     const comments = results[1];
+  //     const img = results[2]
+  //     res.render("blogs/detail", {
+  //       blog: blogs[0][0],
+  //       comments: comments[0],
+  //       images: img[0],
+  //       error: null,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     throw err;
+  //   });
+  //   await conn.commit()
+  // } catch (error) {
+  //   await conn.rollback();
+  //   next(error)
+  // } finally {
+  //   console.log('finally')
+  //   conn.release();
+  // }
+  const promise1 = pool.query("SELECT * FROM blogs WHERE id=?", [
+    req.params.id,
+  ]);
+  const promise2 = pool.query("SELECT * FROM comments left outer join images on comments.id = images.comment_id WHERE comments.blog_id=? order by comment_date", [
+    req.params.id,
+  ]);
+  const promise3 = pool.query("SELECT * FROM images WHERE blog_id=? and comment_id is null", [
+    req.params.id,
+  ]);
+  Promise.all([promise1, promise2, promise3])
+  .then((results) => {
+    const blogs = results[0];
+    const comments = results[1];
+    const img = results[2]
+    res.render("blogs/detail", {
+      blog: blogs[0][0],
+      comments: comments[0],
+      images: img[0],
+      error: null,
     });
-    await conn.commit()
-  } catch (error) {
-    await conn.rollback();
-    next(error)
-  } finally {
-    console.log('finally')
-    conn.release();
-  }
+  })
+  .catch((err) => {
+    return next(err);
+  });
 });
 
 //update blogs
