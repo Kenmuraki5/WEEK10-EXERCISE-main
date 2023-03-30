@@ -124,7 +124,6 @@ router.get("/blogs/:id", async function (req, res, next) {
         images: img[0],
         error: null,
       });
-      console.log("Add blog succes")
     })
     .catch((err) => {
       throw err;
