@@ -41,9 +41,8 @@ router.post("/blogs/addlike/:blogId", async function (req, res, next) {
     console.log('Selected blogs =', rows)
     //สร้างตัวแปรมาเก็บจำนวน like ณ ปัจจุบันของ blog ที่ select มา
     let likeNum = rows[0].like
-    console.log('Like num =', likeNum) // console.log() จำนวน Like ออกมาดู
+    console.log('Like num =', likeNum+=1) // console.log() จำนวน Like ออกมาดู
     //เพิ่มจำนวน like ไปอีก 1 ครั้ง
-    likeNum += 1
 
     //Update จำนวน Like กลับเข้าไปใน DB
     const [rows2, fields2] = await pool.query("UPDATE blogs SET blogs.like=? WHERE blogs.id=?", [
