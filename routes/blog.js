@@ -100,7 +100,6 @@ router.post('/blogs', upload.single('myImage'), async function (req, res, next) 
 
 // show detail
 router.get("/blogs/:id", async function (req, res, next) {
-
   // try {
   //   const promise1 = pool.query("SELECT * FROM blogs WHERE id=?", [
   //     req.params.id,
