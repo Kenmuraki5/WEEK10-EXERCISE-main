@@ -170,7 +170,7 @@ router.put('/blogs/:id', upload.single('myImage'), async (req, res, next) => {
 
     if (file) {
       await conn.query(
-        "UPDATE images SET file_path=? WHERE id=?",
+        "UPDATE images SET file_path=? WHERE blog_id=?",
         [file.path.substr(6), req.params.id])
     }
 
