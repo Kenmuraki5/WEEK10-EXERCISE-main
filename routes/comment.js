@@ -97,7 +97,7 @@ router.delete('/comments/:commentId', async function(req, res, next){
       }
 });
 
-// Delete comment
+
 router.put('/comments/addlike/:commentId',async function(req, res, next){
     try{
         const [bog] = await pool.query("select blog_id from comments where id=?;",[
