@@ -171,10 +171,10 @@ router.put('/blogs/:id', upload.single('myImage'), async (req, res, next) => {
     if (file) {
       await conn.query(
         "UPDATE images SET file_path=? WHERE id=?",
-        [file.path, req.params.id])
+        [file.path.substr(6), req.params.id])
     }
 
-    await conn.query('UPDATE blogs SET title=?,content=?, pinned=?, blogs.like=?, create_by_id=? WHERE id=?', [req.body.title, req.body.content,  req.body.pinned,  req.body.like, null, req.params.id])
+    
     conn.commit()
     res.json({ message: "Update Blog id " + req.params.id + " Complete" })
   } catch (error) {
